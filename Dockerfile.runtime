@@ -1,0 +1,45 @@
+# syntax=docker/dockerfile:1.7
+
+ARG BUILD_IMAGE=ghcr.io/hhhflow2020/cpp-builder-gcc:bookworm-v1.0.5
+ARG RUNTIME_IMAGE=ghcr.io/hhhflow2020/cpp-runtime-base:bookworm-v1.0.5
+
+FROM ${BUILD_IMAGE} AS builder
+
+ARG BUILD_TYPE=Release
+
+ENV BUILD_TYPE=${BUILD_TYPE}
+ENV INSTALL_PREFIX=/workspace/package
+
+WORKDIR /workspace
+
+COPY conanfile.* ./
+# COPY conan.lock* ./
+
+COPY scripts/conan-install.sh ./scripts/conan-install.sh
+COPY scripts/cmake-build.sh ./scripts/cmake-build.sh
+
+RUN chmod +x ./scripts/conan-install.sh ./scripts/cmake-build.sh
+
+RUN --mount=type=cache,target=/root/.conan2 \
+    ./scripts/conan-install.sh
+
+COPY . .
+
+RUN chmod +x ./scripts/conan-install.sh ./scripts/cmake-build.sh
+
+RUN --mount=type=cache,target=/root/.conan2 \
+    ./scripts/cmake-build.sh
+
+
+FROM ${RUNTIME_IMAGE} AS runtime
+
+ENV APP_HOME=/app
+ENV LD_LIBRARY_PATH=${APP_HOME}/lib
+
+WORKDIR ${APP_HOME}
+
+COPY --from=builder /workspace/package ${APP_HOME}/
+
+RUN test -x "${APP_HOME}/bin/matrix_app"
+
+ENTRYPOINT ["/app/bin/matrix_app"]
