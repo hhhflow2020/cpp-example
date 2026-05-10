@@ -25,7 +25,7 @@ int main() {
 
     const matrix::Matrix c = matrix::multiply(a, b);
 
-    fmt::print(fmt::fg(fmt::color::green) | fmt::emphasis::bold, "A * B = \n");
+    fmt::print(fmt::fg(fmt::color::blue) | fmt::emphasis::bold, "A * B = \n");
     std::cout << c;
 
 
