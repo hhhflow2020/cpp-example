@@ -20,14 +20,14 @@ COPY scripts/cmake-build.sh ./scripts/cmake-build.sh
 
 RUN chmod +x ./scripts/conan-install.sh ./scripts/cmake-build.sh
 
-RUN --mount=type=cache,target=/root/.conan2 \
+RUN --mount=type=cache,target=/root/.conan2/p \
     ./scripts/conan-install.sh
 
 COPY . .
 
 RUN chmod +x ./scripts/conan-install.sh ./scripts/cmake-build.sh
 
-RUN --mount=type=cache,target=/root/.conan2 \
+RUN --mount=type=cache,target=/root/.conan2/p \
     ./scripts/cmake-build.sh
 
 
