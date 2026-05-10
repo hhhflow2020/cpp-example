@@ -26,7 +26,7 @@ jobs:
         build_type: [Release, Debug]
 
     container:
-      image: registry.example.com/cpp/build:stable
+      image: ${{ env.BUILD_IMAGE }}
       # 如果 registry.example.com 是私有仓库，保留 credentials
       # 如果是公开仓库，可以删除 credentials
       # credentials:
