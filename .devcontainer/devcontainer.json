@@ -1,4 +1,4 @@
 {
-  "image": "ghcr.io/hhhflow2020/cpp-dev-clang:bookworm-v1.1.2",
+  "image": "ghcr.io/hhhflow2020/cpp-dev-clang:bookworm-v2.0.0",
   "features": {}
 }
